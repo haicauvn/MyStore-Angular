@@ -1,0 +1,208 @@
+<div
+  style="margin-top: 40px; display: flex; justify-content: center"
+  *ngIf="carts.length > 0"
+>
+  <div style="display: block">
+    <div
+      style="display: flex !important; margin-bottom: 10px"
+      *ngFor="let cart of carts"
+    >
+      <img
+        [src]="cart.url"
+        alt=""
+        style="
+          width: 100px;
+          height: 150px;
+          border-radius: 5px;
+          margin-right: 20px;
+        "
+      />
+      <div style="display: flex !important; flex-direction: column !important">
+        <span>{{ cart.name }}</span>
+        <span style="padding: 10px 0">{{ cart.price }}</span>
+        <span
+          style="display: flex; align-items: center; justify-content: center"
+          >Amount:
+          <input
+            type="number"
+            [min]="1"
+            [value]="cart.amount"
+            id="typeNumber"
+            oninput="validity.valid||(value='');"
+            class="form-control"
+            style="width: 100px; margin-left: 10px"
+            (change)="changeAmount($event.target, cart)"
+        /></span>
+        <button
+          style="margin-top: 10px; width: 100px"
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteItem(cart.id)"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <h2>Total: {{ total }}</h2>
+  </div>
+  <form style="margin-left: 100px" [formGroup]="formCart">
+    <div style="display: flex; flex-direction: column; margin-bottom: 10px">
+      <span style="margin-bottom: 5px">Full Name</span>
+      <input
+        type="text"
+        class="form-control"
+        minlength="6"
+        maxlength="32"
+        placeholder="Full Name"
+        formControlName="fullName"
+      />
+      <div
+        *ngIf="
+          (formCart.controls['fullName'].touched ||
+            formCart.controls['fullName'].dirty) &&
+          formCart.controls['fullName'].errors
+        "
+      >
+        <p
+          *ngIf="formCart.controls['fullName'].errors?.['required']"
+          class="text-danger"
+        >
+          Full name is required
+        </p>
+        <p
+          *ngIf="formCart.controls['fullName'].errors?.['minlength'] || formCart.controls['fullName'].errors?.['maxlength']"
+          class="text-danger"
+        >
+          Full name from 6 - 25 character
+        </p>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; margin-bottom: 10px">
+      <span style="margin-bottom: 5px">Address</span>
+      <input
+        type="text"
+        class="form-control"
+        minlength="6"
+        maxlength="250"
+        formControlName="address"
+      />
+      <div
+        *ngIf="
+          (formCart.controls['address'].touched ||
+            formCart.controls['address'].dirty) &&
+          formCart.controls['address'].errors
+        "
+      >
+        <p
+          *ngIf="formCart.controls['address'].errors?.['required']"
+          class="text-danger"
+        >
+          Address is required
+        </p>
+        <p
+          *ngIf="formCart.controls['address'].errors?.['minlength'] || formCart.controls['address'].errors?.['maxlength']"
+          class="text-danger"
+        >
+          Address from 6 - 255 character
+        </p>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; margin-bottom: 10px">
+      <span style="margin-bottom: 5px">Phone Number</span>
+      <input
+        type="number"
+        class="form-control"
+        min="100000000"
+        max="9999999999999"
+        formControlName="phoneNumber"
+      />
+      <div
+        *ngIf="
+          (formCart.controls['phoneNumber'].touched ||
+            formCart.controls['phoneNumber'].dirty) &&
+          formCart.controls['phoneNumber'].errors
+        "
+      >
+        <p
+          *ngIf="formCart.controls['phoneNumber'].errors?.['required']"
+          class="text-danger"
+        >
+          Phone Number is required
+        </p>
+        <p
+          *ngIf="formCart.controls['phoneNumber'].errors?.['min'] || formCart.controls['phoneNumber'].errors?.['max']"
+          class="text-danger"
+        >
+          Phone Number from 8 - 13 character
+        </p>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; margin-bottom: 10px">
+      <span style="margin-bottom: 5px">Credit Card Number</span>
+      <input
+        type="number"
+        class="form-control"
+        [min]="1000000000000000"
+        [max]="9999999999999999"
+        inputmode="numeric"
+        placeholder="XXXX-XXXX-XXXX-XXXX"
+        pattern="^\d+$"
+        minlength="16"
+        maxlength="16"
+        formControlName="creaditCart"
+      />
+      <div
+        *ngIf="
+          (formCart.controls['creaditCart'].touched ||
+            formCart.controls['creaditCart'].dirty) &&
+          formCart.controls['creaditCart'].errors
+        "
+      >
+        <p
+          *ngIf="formCart.controls['creaditCart'].errors?.['required']"
+          class="text-danger"
+        >
+          Credit Card is required
+        </p>
+        <p
+          *ngIf="formCart.controls['creaditCart'].errors?.['min'] || formCart.controls['creaditCart'].errors?.['max']"
+          class="text-danger"
+        >
+          Credit card must be at least 16 characters long
+        </p>
+      </div>
+    </div>
+    <div style="margin-bottom: 10px">
+      We'll never share your payment details with anyone else
+    </div>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [attr.disabled]="formCart.invalid ? true : null"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<div
+  *ngIf="carts.length === 0"
+  style="
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  "
+>
+  <h1 style="color: red">No product in my cart!</h1>
+  <button
+    style="width: 200px; margin-top: 20px"
+    type="button"
+    class="btn btn-primary"
+    routerLink="/"
+  >
+    Back to product list
+  </button>
+</div>

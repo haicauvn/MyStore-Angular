@@ -1,0 +1,21 @@
+<div
+  style="
+    width: 100%;
+    height: 150px;
+    background-color: rgb(11, 168, 121);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+  "
+>
+  <h1 style="margin: 0; padding: 0">My store</h1>
+  <div style="margin-top: 20px">
+    <span style="padding-right: 10px; border-right: 1px solid green; cursor: pointer;"  routerLink="/product-list">Product List</span
+    >
+    <span style="padding: 0 10px; cursor: pointer;" routerLink="/cart">cart <i class="fa-solid fa-cart-shopping"></i></span>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

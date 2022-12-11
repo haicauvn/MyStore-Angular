@@ -1,0 +1,53 @@
+<div
+  style="
+    min-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+  "
+>
+  <div style="display: flex; justify-content: center; align-items: center">
+    <div style="width: 300px; height: 500px">
+      <img
+        [src]="productItem?.url"
+        style="width: 100%; height: 100%; border-radius: 5%"
+      />
+    </div>
+    <div style="display: block; margin-left: 50px">
+      <div style="display: flex; flex-direction: column">
+        <span>{{ productItem?.name }}</span>
+        <span style="margin-top: 10px; font-weight: 700">{{
+          productItem?.description
+        }}</span>
+        <span style="margin-top: 10px; font-weight: 700"
+          >${{ productItem?.price }}</span
+        >
+        <select
+          class="form-select"
+          style="width: 100px; margin-top: 10px"
+          (change)="selectedAmount($event.target)"
+        >
+          <option *ngFor="let option of options" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+        <button
+          style="margin-top: 10px"
+          type="button"
+          class="btn btn-primary"
+          (click)="addProduct(productItem!)"
+        >
+          Add To Cart
+        </button>
+        <div
+          style="color: blue; cursor: pointer; margin-top: 20px"
+          routerLink="/product-list"
+        >
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          <span style="margin-left: 10px">Back to product list</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
