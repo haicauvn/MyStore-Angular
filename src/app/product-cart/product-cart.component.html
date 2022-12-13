@@ -45,7 +45,11 @@
     </div>
     <h2>Total: {{ total }}</h2>
   </div>
-  <form style="margin-left: 100px" [formGroup]="formCart">
+  <form
+    style="margin-left: 100px"
+    #frmInfo = "ngForm"
+    (ngSubmit)="submit(frmInfo.value)"
+  >
     <div style="display: flex; flex-direction: column; margin-bottom: 10px">
       <span style="margin-bottom: 5px">Full Name</span>
       <input
@@ -53,27 +57,23 @@
         class="form-control"
         minlength="6"
         maxlength="32"
+        #name="ngModel"
+        name="fullName"
+        ngModel
+        required
+        [ngModel]="fullName"
+        (ngModelChange)="changeName($event)"
         placeholder="Full Name"
-        formControlName="fullName"
       />
-      <div
-        *ngIf="
-          (formCart.controls['fullName'].touched ||
-            formCart.controls['fullName'].dirty) &&
-          formCart.controls['fullName'].errors
-        "
-      >
-        <p
-          *ngIf="formCart.controls['fullName'].errors?.['required']"
-          class="text-danger"
-        >
+      <div *ngIf="(name.touched || name.dirty) && name.errors">
+        <p *ngIf="name.errors?.['required']" class="text-danger">
           Full name is required
         </p>
         <p
-          *ngIf="formCart.controls['fullName'].errors?.['minlength'] || formCart.controls['fullName'].errors?.['maxlength']"
+          *ngIf="name.errors?.['minlength'] || name.errors?.['maxlength']"
           class="text-danger"
         >
-          Full name from 6 - 25 character
+          Full name from 6 - 32 character
         </p>
       </div>
     </div>
@@ -84,26 +84,23 @@
         class="form-control"
         minlength="6"
         maxlength="250"
-        formControlName="address"
+        #add="ngModel"
+        name="address"
+        ngModel
+        required
+        [ngModel]="address"
+        (ngModelChange)="changeAddress($event)"
+        placeholder="Address"
       />
-      <div
-        *ngIf="
-          (formCart.controls['address'].touched ||
-            formCart.controls['address'].dirty) &&
-          formCart.controls['address'].errors
-        "
-      >
-        <p
-          *ngIf="formCart.controls['address'].errors?.['required']"
-          class="text-danger"
-        >
+      <div *ngIf="(add.touched || add.dirty) && add.errors">
+        <p *ngIf="add.errors?.['required']" class="text-danger">
           Address is required
         </p>
         <p
-          *ngIf="formCart.controls['address'].errors?.['minlength'] || formCart.controls['address'].errors?.['maxlength']"
+          *ngIf="add.errors?.['minlength'] || add.errors?.['maxlength']"
           class="text-danger"
         >
-          Address from 6 - 255 character
+          Address from 6 - 250 character
         </p>
       </div>
     </div>
@@ -112,28 +109,28 @@
       <input
         type="number"
         class="form-control"
-        min="100000000"
-        max="9999999999999"
-        formControlName="phoneNumber"
+        [min]="10000000"
+        [max]="9999999999999"
+        inputmode="numeric"
+        placeholder="Phone Number"
+        (ngModelChange)="changePhoneNumber($event)"
+        minlength="8"
+        maxlength="13"
+        #phone="ngModel"
+        name="phoneNumber"
+        ngModel
+        required
+        [ngModel]="phoneNumber"
       />
-      <div
-        *ngIf="
-          (formCart.controls['phoneNumber'].touched ||
-            formCart.controls['phoneNumber'].dirty) &&
-          formCart.controls['phoneNumber'].errors
-        "
-      >
-        <p
-          *ngIf="formCart.controls['phoneNumber'].errors?.['required']"
-          class="text-danger"
-        >
+      <div *ngIf="(phone.touched || phone.dirty) && phone.errors">
+        <p *ngIf="phone.errors?.['required']" class="text-danger">
           Phone Number is required
         </p>
         <p
-          *ngIf="formCart.controls['phoneNumber'].errors?.['min'] || formCart.controls['phoneNumber'].errors?.['max']"
+          *ngIf="phone.errors?.['min'] || phone.errors?.['max']"
           class="text-danger"
         >
-          Phone Number from 8 - 13 character
+          Phone Number form 8 - 13 number
         </p>
       </div>
     </div>
@@ -146,26 +143,22 @@
         [max]="9999999999999999"
         inputmode="numeric"
         placeholder="XXXX-XXXX-XXXX-XXXX"
+        (ngModelChange)="changeCard($event)"
         pattern="^\d+$"
         minlength="16"
         maxlength="16"
-        formControlName="creaditCart"
+        #card="ngModel"
+        name="creditCard"
+        ngModel
+        required
+        [ngModel]="creditCard"
       />
-      <div
-        *ngIf="
-          (formCart.controls['creaditCart'].touched ||
-            formCart.controls['creaditCart'].dirty) &&
-          formCart.controls['creaditCart'].errors
-        "
-      >
-        <p
-          *ngIf="formCart.controls['creaditCart'].errors?.['required']"
-          class="text-danger"
-        >
-          Credit Card is required
+      <div *ngIf="(card.touched || card.dirty) && card.errors">
+        <p *ngIf="card.errors?.['required']" class="text-danger">
+          Credit is required
         </p>
         <p
-          *ngIf="formCart.controls['creaditCart'].errors?.['min'] || formCart.controls['creaditCart'].errors?.['max']"
+          *ngIf="card.errors?.['min'] || card.errors?.['max']"
           class="text-danger"
         >
           Credit card must be at least 16 characters long
@@ -178,8 +171,8 @@
     <button
       type="button"
       class="btn btn-primary"
-      [attr.disabled]="formCart.invalid ? true : null"
-      (click)="onSubmit()"
+      [disabled]="frmInfo.invalid || frmInfo.submitted"
+      type="submit"
     >
       Submit
     </button>

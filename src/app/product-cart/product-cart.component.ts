@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductListModal } from '../product-list/product-list.modal';
 import { ProductCartService } from './service/product-cart.service';
@@ -13,12 +13,10 @@ export class ProductCartComponent implements OnInit {
   carts: ProductListModal[] = []
   total: number = 0
 
-  formCart = new FormGroup({
-    fullName: new FormControl('', [Validators.required, Validators.minLength(6),Validators.maxLength(25)]),
-    address: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(255)]),
-    phoneNumber: new FormControl('', [Validators.required]),
-    creaditCart: new FormControl('', [Validators.required]),
-  })
+  fullName: string = '';
+  address: string = '';
+  creditCard: string = '';
+  phoneNumber: number = 0
 
   constructor(private productCartService: ProductCartService, private router: Router) { }
 
@@ -63,8 +61,31 @@ export class ProductCartComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    this.router.navigate(['payment'], {state: {...this.formCart.value, total: this.total}})
+  changeName(data: string) {
+    this.fullName = data
+  }
+
+  changeAddress(data: string) {
+    this.address = data
+  }
+
+  changeCard(data: string) {
+    this.creditCard = data
+  }
+
+  changePhoneNumber(data: number) {
+    this.phoneNumber = data
+  }
+
+  submit(data: NgForm) {
+    const value = {
+      fullName: this.fullName,
+      address: this.address,
+      creditCart: this.creditCard,
+      phoneNumber: this.phoneNumber,
+      total: this.total
+    }
+    this.router.navigate(['payment'], {state: value})
   }
 
 }
